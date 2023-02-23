@@ -8,22 +8,15 @@ module.exports = async ({getNamedAccounts, deployments}) => {
 
     log("---------------------------")
 
-    const box = await deploy("Box", {
+    const boxv2 = await deploy("BoxV2", {
         from: deployer,
         args: [],
         waitConfirmations: network.config.blockConfirmations || 1,
         log: true,
-        proxy: {
-            proxyContract: "OpenZeppelinTransparentProxy",
-            viaAdminContract: {
-                name: "BoxProxyAdmin",
-                artifact: "BoxProxyAdmin"
-            }
-        }
     })
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         log("Verifing.....")
-        await verify(box.address, args) 
+        await verify(boxv2.address, args) 
     }
 }
